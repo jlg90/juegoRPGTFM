@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArcaneClass ⚔️</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="particles"></div>
+<header>
+  <h1>⚔ ArcaneClass ⚔</h1>
+  <p>El campo de batalla del saber</p>
+</header>
+<nav id="main-nav" class="hidden">
+  <button class="nav-btn" data-view="hero">Mi Personaje</button>
+  <button class="nav-btn" data-view="matches">Mis Combates</button>
+  <button class="nav-btn" data-view="leaderboard">Clasificación</button>
+  <button class="nav-btn hidden" id="nav-teacher" data-view="teacher">⚙ Docente</button>
+  <button class="nav-btn" id="btn-logout">Salir</button>
+</nav>
+
+<!-- ══ LOGIN ══ -->
+<div id="login-view" class="view active">
+  <div class="login-wrap">
+    <div class="login-icon">🏰</div>
+    <div class="login-subtitle">Accede al reino</div>
+    <div class="login-box">
+      <div class="field-group"><label>Nombre de héroe</label><input type="text" id="login-user" placeholder="usuario"></div>
+      <div class="field-group"><label>Contraseña</label><input type="password" id="login-pass" placeholder="••••••••"></div>
+      <button class="btn btn-gold w100" id="btn-login">Entrar al reino</button>
+      <div class="login-hint">Docente: <strong>docente</strong> / <strong>profesor123</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MI PERSONAJE ══ -->
+<div id="hero-view" class="view hidden">
+  <div class="two-col">
+    <div>
+      <div class="section-title">Tu personaje</div>
+      <div class="card card-gold">
+        <div class="hero-header">
+          <div class="char-avatar" id="hero-avatar">?</div>
+          <div>
+            <div class="hero-name" id="hero-name">—</div>
+            <div class="hero-class" id="hero-class">—</div>
+            <span class="badge badge-gold" id="hero-pts-badge">0 pts</span>
+          </div>
+        </div>
+        <div id="hero-stats-bars"></div>
+        <div class="hero-footer">
+          <span>🏆 <strong id="hero-wins">0</strong> victorias</span>
+          <span>💀 <strong id="hero-losses">0</strong> derrotas</span>
+          <span>⚡ <strong id="hero-pts-total">0</strong> pts totales</span>
+        </div>
+      </div>
+      <!-- LOADOUT SELECTOR -->
+      <div class="card">
+        <div class="card-title">⚔ Habilidades para el combate</div>
+        <div id="loadout-selector"><div style="color:var(--muted);font-style:italic;font-size:.85rem">Cargando...</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Gastar puntos</div>
+      <div class="card">
+        <div class="pts-pool">
+          <span class="pts-pool-num" id="pts-pool-num">0</span>
+          <span class="pts-pool-label">puntos disponibles</span>
+        </div>
+        <div id="skill-upgrades"></div>
+        <button class="btn btn-gold w100 mt1" id="btn-save-upgrades">Aplicar mejoras de stats</button>
+      </div>
+      <div class="card">
+        <div class="card-title">🛒 Tienda de habilidades</div>
+        <div id="skill-shop"></div>
+      </div>
+      <div class="card" id="reset-points-card" style="border-color:#4a1010">
+        <!-- Renderizado por renderResetButton() -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MIS COMBATES ══ -->
+<div id="matches-view" class="view hidden">
+  <div class="section-title">⚔ Mis Combates</div>
+  <div id="matches-list"></div>
+</div>
+
+<!-- ══ PANTALLA DE BATALLA ══ -->
+<div id="battle-view" class="view hidden">
+
+  <!-- Barra superior -->
+  <div class="battle-topbar">
+    <button class="btn btn-ghost btn-sm" id="btn-rules" onclick="toggleRules()">📖 Reglas ▾</button>
+    <div class="timer-wrap hidden" id="timer-wrap">
+      <span class="timer-label">⏱</span>
+      <span class="battle-timer" id="battle-timer">30</span>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="showView('matches')">← Volver</button>
+  </div>
+
+  <!-- Reglas desplegables -->
+  <div id="rules-panel" class="rules-panel hidden">
+    <div class="rules-grid">
+      <div class="rules-section">
+        <div class="rules-title">⚔ Combate</div>
+        <ul>
+          <li>Ambos eligen habilidad <strong>a la vez</strong>. 30 segundos para elegir.</li>
+          <li>Si no eliges a tiempo, pierdes el turno automáticamente.</li>
+          <li>El orden depende de la <strong>velocidad</strong> + habilidad + un poco de azar.</li>
+        </ul>
+      </div>
+      <div class="rules-section">
+        <div class="rules-title">🎯 Habilidades</div>
+        <ul>
+          <li>Llevas <strong>4 habilidades</strong> al combate — elige bien tu loadout.</li>
+          <li>Las más potentes tienen <strong>60% de precisión</strong> — pueden fallar.</li>
+          <li>El veneno se acumula si aplicas varios efectos.</li>
+        </ul>
+      </div>
+      <div class="rules-section">
+        <div class="rules-title">⚡ Estados</div>
+        <ul>
+          <li><strong>Aturdido / Congelado:</strong> pierdes tu turno. 20% de que dure 2 turnos.</li>
+          <li><strong>Veneno:</strong> daño fijo al final de cada turno. Acumulable.</li>
+          <li><strong>Escudo mágico:</strong> reduce el próximo golpe recibido 50%.</li>
+          <li><strong>Escudo divino:</strong> inmune al próximo ataque completamente.</li>
+        </ul>
+      </div>
+      <div class="rules-section">
+        <div class="rules-title">🏫 Puntos</div>
+        <ul>
+          <li>El docente otorga puntos por rendimiento académico.</li>
+          <li>Mejora tus stats (ATK, DEF, VEL, HP) con puntos.</li>
+          <li>Desbloquea habilidades nuevas en la tienda.</li>
+          <li>Si cierras la pestaña durante un combate, <strong>pierdes</strong>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Escena principal -->
+  <div id="battle-scene">
+    <div class="bs-sky"></div>
+    <div class="bs-aurora"></div>
+    <div class="bs-moon"></div>
+    <div class="bs-stars-layer" id="bs-stars-layer"></div>
+    <div class="bs-mountains-far"></div>
+    <div class="bs-mountains"></div>
+    <div class="bs-ground"></div>
+    <div class="bs-ground-glow"></div>
+
+    <!-- INFO ENEMIGO -->
+    <div class="bs-infobox bs-enemy-box">
+      <div class="bs-char-name" id="bat-enemy-name">—</div>
+      <div class="bs-hprow">
+        <span class="bs-hplabel">HP</span>
+        <div class="bs-hptrack"><div class="bs-hpfill" id="bat-enemy-bar" style="width:100%"></div></div>
+      </div>
+      <div class="bs-hpnum" id="bat-enemy-num">—</div>
+      <div class="bs-bufflist" id="bat-enemy-buffs"></div>
+    </div>
+
+    <!-- SPRITE ENEMIGO -->
+    <div class="bs-sprite-area bs-enemy-area">
+      <div class="bs-sprite bs-sprite-enemy" id="bat-enemy-icon">?</div>
+      <div class="bs-platform bs-platform-enemy"></div>
+    </div>
+
+    <!-- SPRITE JUGADOR -->
+    <div class="bs-sprite-area bs-player-area">
+      <div class="bs-sprite bs-sprite-player" id="bat-player-icon">?</div>
+      <div class="bs-platform bs-platform-player"></div>
+    </div>
+
+    <!-- INFO JUGADOR -->
+    <div class="bs-infobox bs-player-box">
+      <div class="bs-char-name" id="bat-player-name">—</div>
+      <div class="bs-hprow">
+        <span class="bs-hplabel">HP</span>
+        <div class="bs-hptrack"><div class="bs-hpfill" id="bat-player-bar" style="width:100%"></div></div>
+      </div>
+      <div class="bs-hpnum" id="bat-player-num">—</div>
+      <div class="bs-bufflist" id="bat-player-buffs"></div>
+    </div>
+
+    <div id="bs-flash" class="bs-flash hidden"></div>
+    <div class="bs-vignette"></div>
+    <div id="anim-layer"></div>
+  </div>
+
+  <!-- Caja de diálogo -->
+  <div id="poke-textbox">
+    <div id="poke-msg">Cargando combate...</div>
+  </div>
+
+  <!-- Panel: elige habilidad -->
+  <div id="poke-skill-panel" class="hidden">
+    <div class="poke-skill-header">
+      <span class="poke-skill-label">¿Qué harás?</span>
+      <span class="rival-ready-badge hidden" id="rival-ready-badge-s">✓ Rival listo</span>
+    </div>
+    <div id="skill-buttons" class="poke-skill-grid"></div>
+  </div>
+
+  <!-- Panel: stun/freeze — botón SIEMPRE habilitado -->
+  <div id="stun-panel" class="hidden">
+    <div class="stun-inner">
+      <div>
+        <div class="stun-icon" id="stun-icon">⚡</div>
+        <div class="stun-msg" id="stun-msg">¡Estás aturdido! Pierdes este turno.</div>
+      </div>
+      <button class="btn btn-amber" id="btn-stun-skip">Pasar turno ➜</button>
+    </div>
+  </div>
+
+  <!-- Panel: esperando al rival -->
+  <div id="poke-waiting-panel" class="hidden">
+    <div class="waiting-inner">
+      <div class="waiting-dots">
+        <span class="poke-wait-dot">●</span><span class="poke-wait-dot">●</span><span class="poke-wait-dot">●</span>
+      </div>
+      <span class="waiting-text">Esperando al rival...</span>
+      <span class="rival-ready-badge hidden" id="rival-ready-badge-w">✓ ¡Rival listo!</span>
+    </div>
+  </div>
+
+  <!-- Resultado -->
+  <div id="battle-result" class="hidden">
+    <div class="card card-gold result-card">
+      <div id="result-emoji" class="result-emoji">🏆</div>
+      <div id="result-title" class="result-title">—</div>
+      <div id="result-name" class="muted" style="margin-top:.4rem"></div>
+      <button class="btn btn-gold mt1" id="btn-back-matches">Volver a combates</button>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="card mt1">
+    <div class="card-title" style="cursor:pointer;user-select:none" onclick="toggleLog()">
+      📜 Registro de batalla <span id="log-arrow">▼</span>
+    </div>
+    <div id="battle-log"></div>
+  </div>
+</div>
+
+<!-- ══ CLASIFICACIÓN ══ -->
+<div id="leaderboard-view" class="view hidden">
+  <div class="section-title">🏆 Clasificación</div>
+  <div id="lb-list"></div>
+</div>
+
+<!-- ══ PANEL DOCENTE ══ -->
+<div id="teacher-view" class="view hidden">
+  <div class="section-title">⚙ Panel del Docente</div>
+  <!-- Vista en directo de combate (oculta hasta que el docente pulsa "Ver") -->
+  <div id="teacher-watch-area" class="card card-gold hidden" style="margin-bottom:1rem"></div>
+  <div class="two-col">
+    <div>
+      <div class="card card-gold">
+        <div class="card-title">➕ Crear alumno</div>
+        <div class="field-group"><label>Nombre</label><input type="text" id="new-name" placeholder="nombre_alumno"></div>
+        <div class="field-group"><label>Contraseña</label><input type="password" id="new-pass" placeholder="••••••••"></div>
+        <div class="class-grid small" id="teacher-class-grid">
+          <div class="class-btn selected" data-cls="mage"><span class="class-icon">🧙</span>Mago</div>
+          <div class="class-btn" data-cls="warrior"><span class="class-icon">⚔️</span>Guerrero</div>
+          <div class="class-btn" data-cls="rogue"><span class="class-icon">🗡️</span>Pícaro</div>
+          <div class="class-btn" data-cls="paladin"><span class="class-icon">🛡️</span>Paladín</div>
+          <div class="class-btn" data-cls="druid"><span class="class-icon">🌿</span>Druida</div>
+          <div class="class-btn" data-cls="warlock"><span class="class-icon">👹</span>Brujo</div>
+          <div class="class-btn" data-cls="archer"><span class="class-icon">🏹</span>Arquero</div>
+          <div class="class-btn" data-cls="necromancer"><span class="class-icon">💀</span>Nigromante</div>
+        </div>
+        <button class="btn btn-green btn-sm w100" id="btn-create-student">Crear alumno</button>
+      </div>
+      <div class="card">
+        <div class="card-title">⚔ Crear combate 1v1</div>
+        <div class="field-group"><label>Jugador 1</label><select id="match-p1"><option value="">Selecciona...</option></select></div>
+        <div class="field-group"><label>Jugador 2</label><select id="match-p2"><option value="">Selecciona...</option></select></div>
+        <button class="btn btn-gold w100 mt05" id="btn-create-match">⚔ Crear combate</button>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">👥 Alumnos</div>
+        <div id="students-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">🗡 Combates — <span style="font-size:.75rem;color:var(--muted)">pulsa 👁 para ver en directo</span><button class="btn btn-red btn-sm" onclick="handleClearAllMatches()">🗑 Borrar todo</button></div>
+        <div id="teacher-matches"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/hero.js"></script>
+<script src="js/teacher.js"></script>
+<script src="js/battle.js"></script>
+</body>
+</html>

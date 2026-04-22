@@ -1,0 +1,156 @@
+{
+  "players": {
+    "david": {
+      "username": "david",
+      "password": "$2b$10$DkwyCIMgpOuNf9Vb5Ab8he9v8fq8qmigc4U3RKQ9N7.C11FbU0.O2",
+      "cls": "rogue",
+      "atk": 16,
+      "def": 4,
+      "spd": 19,
+      "hp": 90,
+      "pts_available": 0,
+      "pts_spent": 30,
+      "pts_total": 30,
+      "wins": 10,
+      "losses": 3,
+      "skills": [
+        "stab",
+        "poison",
+        "evasion",
+        "backstab",
+        "critical",
+        "smoke_bomb",
+        "shadow_step"
+      ],
+      "loadout": [
+        "backstab",
+        "critical",
+        "smoke_bomb",
+        "shadow_step"
+      ]
+    },
+    "sergio": {
+      "username": "sergio",
+      "password": "$2b$10$f8Wxk95zWbnBtEDQdeMRJucKy/AU/zDdvv9cGicNq4IcSqL3Wm6.a",
+      "cls": "necromancer",
+      "atk": 8,
+      "def": 4,
+      "spd": 5,
+      "hp": 90,
+      "pts_available": 0,
+      "pts_spent": 0,
+      "pts_total": 0,
+      "wins": 1,
+      "losses": 0,
+      "skills": [
+        "bone_spear",
+        "wither",
+        "soul_harvest",
+        "death_coil"
+      ],
+      "loadout": [
+        "bone_spear",
+        "wither",
+        "soul_harvest",
+        "death_coil"
+      ]
+    },
+    "jesus": {
+      "username": "jesus",
+      "password": "$2b$10$jRu9Eo.GICJu7OIBkAVuguoB85BEarFVMlgksDpuciijqHv/a0kkm",
+      "cls": "archer",
+      "atk": 7,
+      "def": 4,
+      "spd": 9,
+      "hp": 85,
+      "pts_available": 0,
+      "pts_spent": 0,
+      "pts_total": 0,
+      "wins": 0,
+      "losses": 1,
+      "skills": [
+        "quick_shot",
+        "arrow_rain",
+        "trip_wire",
+        "aimed_shot"
+      ],
+      "loadout": [
+        "quick_shot",
+        "arrow_rain",
+        "trip_wire",
+        "aimed_shot"
+      ]
+    }
+  },
+  "matches": {
+    "match_1774715288895": {
+      "id": "match_1774715288895",
+      "player1": "sergio",
+      "player2": "jesus",
+      "status": "finished",
+      "winner": "sergio",
+      "createdAt": "2026-03-28T16:28:08.895Z",
+      "state": {
+        "turn": 5,
+        "phase": "choosing",
+        "timerStart": 1774715365271,
+        "pendingActions": {},
+        "p1": {
+          "username": "sergio",
+          "cls": "necromancer",
+          "hp": 72,
+          "maxHp": 102,
+          "atk": 8,
+          "def": 4,
+          "spd": 5,
+          "skills": [
+            "bone_spear",
+            "wither",
+            "soul_harvest",
+            "death_coil"
+          ],
+          "buffs": {},
+          "poison": null,
+          "bleed": {
+            "turns": 1,
+            "pct": 0.01
+          },
+          "status": null,
+          "statusTurns": 0,
+          "cooldowns": {}
+        },
+        "p2": {
+          "username": "jesus",
+          "cls": "archer",
+          "hp": -21,
+          "maxHp": 97,
+          "atk": 7,
+          "def": 4,
+          "spd": 9,
+          "skills": [
+            "quick_shot",
+            "arrow_rain",
+            "trip_wire",
+            "aimed_shot"
+          ],
+          "buffs": {},
+          "bleed": null,
+          "status": "stunned",
+          "statusTurns": 1,
+          "cooldowns": {}
+        },
+        "log": [
+          "🏆 ¡sergio gana el combate!",
+          "[T4] jesus está ATURDIDO y pierde su turno. | jesus seguirá aturdido el próximo turno. | jesus no actúa este turno. | sergio cosecha el alma de jesus para recuperar vida. | sergio drena 28 HP de jesus y recupera 14 HP. | 🥸 SANGRADO: sergio sufre 1 HP (1% HP máx). (1 turnos restantes) | ☠️ VENENO: jesus sufre 8 HP (8% HP máx). El veneno se disipa.",
+          "[T3] jesus lanza una lluvia de flechas sobre sergio. | jesus inflige 14 HP y provoca SANGRADO en sergio (~1 HP/turno, 1% HP máx · 3 turnos restantes). | sergio sangra por las múltiples heridas. | sergio lanza una espiral de energía mortal sobre jesus. | sergio → jesus: −22 HP. | jesus queda PARALIZADO por la energía necrótica. | ¡El efecto es tan fuerte que durará 2 turnos! | 🥸 SANGRADO: sergio sufre 1 HP (1% HP máx). (2 turnos restantes) | ☠️ VENENO: jesus sufre 8 HP (8% HP máx). (1 turnos restantes)",
+          "[T2] jesus apunta cuidadosamente y dispara contra sergio. | jesus → sergio: −42 HP. | sergio cosecha el alma de jesus para recuperar vida. | sergio drena 25 HP de jesus y recupera 14 HP. | ☠️ VENENO: jesus sufre 8 HP (8% HP máx). (2 turnos restantes)",
+          "[T1] jesus coloca una trampa y se prepara para esquivar. | jesus: EVASIÓN 80% activada. | sergio marchita a jesus con energía necrótica. | sergio inflige 11 HP y ENVENENA a jesus (~8 HP/turno, 8% HP máx · 4 turnos restantes). | jesus queda MARCHITADO y perderá HP cada turno. | ☠️ VENENO: jesus sufre 8 HP (8% HP máx). (3 turnos restantes)",
+          "¡Combate iniciado! Elegid vuestra habilidad (30 s)."
+        ]
+      }
+    }
+  },
+  "config": {
+    "teacherPassword": "$2a$12$yNeoEAVcO3JYOFcn7ToOWOjZnMPRorEGbSeCPUqMC9xh.tBB.eOsi"
+  }
+}
